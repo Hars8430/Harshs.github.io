@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harsh Singh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1320;
+    --panel: #171C2C;
+    --panel-alt: #1D2338;
+    --border: #2A3149;
+    --text: #E9E7E0;
+    --text-muted: #8D93A8;
+    --amber: #E8A33D;
+    --amber-dim: #B9822E;
+    --teal: #5FC9C0;
+    --danger: #E2685A;
+    --radius: 10px;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 42px 42px;
+    pointer-events: none;
+    z-index:0;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  .container{ max-width: 980px; margin: 0 auto; padding: 0 24px; position: relative; z-index:1; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(15,19,32,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .container{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo{ font-family: var(--mono); font-weight:600; font-size: 1rem; color: var(--text); }
+  .logo span{ color: var(--amber); }
+  .nav-links{ display:flex; gap: 28px; align-items:center; }
+  .nav-links a{
+    font-family: var(--mono); font-size: 0.82rem; color: var(--text-muted);
+    letter-spacing: 0.02em; transition: color .2s;
+  }
+  .nav-links a:hover{ color: var(--amber); }
+  .nav-cta{
+    border:1px solid var(--amber-dim); color: var(--amber) !important;
+    padding: 7px 14px; border-radius: 6px; font-size: 0.78rem !important;
+  }
+  .nav-cta:hover{ background: rgba(232,163,61,0.1); }
+  .menu-btn{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding: 100px 0 70px; }
+  .terminal{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.r{ background:#E2685A; } .dot.y{ background:#E8A33D; } .dot.g{ background:#5FC9C0; }
+  .terminal-title{
+    font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted);
+    margin-left: 8px;
+  }
+  .terminal-body{
+    padding: 28px 28px 34px;
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    min-height: 220px;
+  }
+  .terminal-body .line{ margin-bottom: 6px; white-space: pre-wrap; }
+  .prompt{ color: var(--teal); }
+  .out-name{ color: var(--text); font-size: 2rem; font-weight:700; font-family: var(--sans); display:block; margin: 14px 0 6px; }
+  .out-role{ color: var(--amber); }
+  .out-sub{ color: var(--text-muted); }
+  .cursor{
+    display:inline-block; width:9px; height:1.1em; background: var(--amber);
+    vertical-align: text-bottom; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero-actions{ display:flex; gap:14px; margin-top: 28px; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--mono); font-size: 0.85rem; padding: 11px 20px;
+    border-radius: 7px; border:1px solid var(--border); transition: all .2s;
+  }
+  .btn-primary{ background: var(--amber); color: #14151C; border-color: var(--amber); font-weight:600; }
+  .btn-primary:hover{ background: #f0b358; }
+  .btn-ghost{ color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--teal); color: var(--teal); }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{ padding: 64px 0; position: relative; z-index:1; }
+  .sec-head{ display:flex; align-items:baseline; gap:12px; margin-bottom: 34px; }
+  .sec-tag{ font-family: var(--mono); color: var(--amber); font-size: 0.8rem; }
+  .sec-title{ font-size: 1.6rem; font-weight: 700; }
+  .sec-rule{ flex:1; height:1px; background: var(--border); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items:start; }
+  .about-text p{ color: var(--text-muted); margin-bottom: 14px; font-size: 0.98rem; }
+  .about-text strong{ color: var(--text); font-weight:600; }
+  .status-card{
+    background: var(--panel); border:1px solid var(--border); border-radius: var(--radius);
+    padding: 20px;
+  }
+  .status-row{ display:flex; justify-content:space-between; font-family: var(--mono); font-size: 0.82rem; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+  .status-row:last-child{ border-bottom:none; }
+  .status-row span:first-child{ color: var(--text-muted); }
+  .status-live{ color: var(--teal); }
+  .status-live::before{ content:"●"; margin-right:6px; font-size:0.7em; }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .skill-card{
+    background: var(--panel); border:1px solid var(--border); border-radius: var(--radius);
+    padding: 20px;
+  }
+  .skill-card h4{
+    font-family: var(--mono); font-size: 0.78rem; color: var(--teal);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px;
+  }
+  .pill-row{ display:flex; flex-wrap:wrap; gap: 8px; }
+  .pill{
+    font-family: var(--mono); font-size: 0.78rem; padding: 5px 10px;
+    background: var(--panel-alt); border:1px solid var(--border); border-radius: 5px; color: var(--text);
+  }
+
+  /* ---------- PROJECTS (model cards) ---------- */
+  .project-card{
+    background: var(--panel); border:1px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 22px; overflow:hidden;
+  }
+  .pc-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--panel-alt);
+  }
+  .pc-title{ font-size: 1.05rem; font-weight: 700; }
+  .pc-status{
+    font-family: var(--mono); font-size: 0.72rem; padding: 4px 10px; border-radius: 20px;
+    border:1px solid var(--amber-dim); color: var(--amber);
+  }
+  .pc-status.progress{ border-color:#5FC9C0; color:#5FC9C0; }
+  .pc-body{ padding: 20px 22px; }
+  .pc-field{ display:grid; grid-template-columns: 110px 1fr; gap: 12px; margin-bottom: 10px; font-size: 0.9rem; }
+  .pc-field .k{ font-family: var(--mono); color: var(--text-muted); font-size: 0.78rem; padding-top:2px; }
+  .pc-field .v{ color: var(--text); }
+  .pc-field .v ul{ padding-left: 18px; color: var(--text-muted); }
+  .pc-field .v li{ margin-bottom: 4px; }
+  .pc-links{ display:flex; gap: 16px; margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+  .pc-links a{ font-family: var(--mono); font-size: 0.82rem; color: var(--teal); }
+  .pc-links a:hover{ text-decoration: underline; }
+  .pc-links .disabled{ color: var(--text-muted); cursor: default; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-card{
+    background: var(--panel); border:1px solid var(--border); border-radius: var(--radius);
+    padding: 40px; text-align:center;
+  }
+  .contact-card p{ color: var(--text-muted); margin-bottom: 22px; }
+  .contact-links{ display:flex; justify-content:center; gap: 16px; flex-wrap:wrap; }
+
+  footer{ padding: 30px 0 50px; text-align:center; }
+  footer .container{ font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); }
+  footer .amber{ color: var(--amber); }
+
+  @media (max-width: 760px){
+    .nav-links{ display:none; }
+    .about-grid{ grid-template-columns: 1fr; }
+    .skills-grid{ grid-template-columns: 1fr; }
+    .pc-field{ grid-template-columns: 1fr; }
+    .out-name{ font-size: 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cursor{ animation: none; }
+    html{ scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">harsh<span>.ai</span></div>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#contact" class="nav-cta">contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="terminal-title">harsh@genai-portfolio: ~</span>
+      </div>
+      <div class="terminal-body" id="terminalBody"></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="/resume.pdf" class="btn btn-ghost">Download Résumé</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">01</span>
+      <span class="sec-title">About</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm <strong>Harsh Singh</strong>, a fresher engineer focused on <strong>Generative AI</strong> — retrieval-augmented systems, fine-tuning open-source LLMs, and building agents that actually get tasks done, not just demo well.</p>
+        <p>I like understanding models from the inside out — attention mechanisms, why a fine-tune works or doesn't, where a RAG pipeline hallucinates and how to stop it — and I ship what I learn as working projects rather than notes.</p>
+        <p>Currently looking for a <strong>fresher GenAI / ML Engineer role</strong> where I can keep building at that intersection of research and product.</p>
+      </div>
+      <div class="status-card">
+        <div class="status-row"><span>role</span><span>GenAI Engineer (Fresher)</span></div>
+        <div class="status-row"><span>focus</span><span>RAG · Fine-tuning · Agents</span></div>
+        <div class="status-row"><span>status</span><span class="status-live">open to work</span></div>
+        <div class="status-row"><span>based in</span><span>India</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">02</span>
+      <span class="sec-title">Skills</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h4>Core ML / DL</h4>
+        <div class="pill-row">
+          <span class="pill">Python</span>
+          <span class="pill">PyTorch</span>
+          <span class="pill">Transformers</span>
+          <span class="pill">Numpy / Pandas</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>GenAI Stack</h4>
+        <div class="pill-row">
+          <span class="pill">LangChain</span>
+          <span class="pill">LlamaIndex</span>
+          <span class="pill">RAG</span>
+          <span class="pill">LoRA / QLoRA</span>
+          <span class="pill">Prompt Engg.</span>
+          <span class="pill">Function Calling</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h4>Tools / Deployment</h4>
+        <div class="pill-row">
+          <span class="pill">Hugging Face</span>
+          <span class="pill">Chroma / FAISS</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Streamlit</span>
+          <span class="pill">Git</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">03</span>
+      <span class="sec-title">Projects</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div id="projectList"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">04</span>
+      <span class="sec-title">Contact</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="contact-card">
+      <p>Open to fresher Generative AI / ML Engineer roles — reach out directly, I reply fast.</p>
+      <div class="contact-links">
+        <a href="singhharsh8118@gmail.com" class="btn btn-primary">Email Me</a>
+        <a href="https://github.com/Hars8430" class="btn btn-ghost">GitHub</a>
+        <a href="https://www.linkedin.com/in/harshdtu2k26/e" class="btn btn-ghost">LinkedIn</a>
+        <a href="https://drive.google.com/file/d/12jAX8387XamQ1I77qRULA2AVjscwvpdE/view?usp=sharing"
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span class="amber">$</span> echo "thanks for stopping by, let's build something" <span class="cursor"></span>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   ADD YOUR PROJECTS HERE.
+   Just copy one object below, edit the fields, and it shows up on the
+   page automatically — no HTML/CSS editing needed.
+
+   status: "Shipped" or "In Progress" (controls the badge color)
+   highlights: short bullet points — what makes it more than a tutorial
+   github / demo: leave as "" (empty string) if you don't have one yet
+   ===================================================================== */
+const PROJECTS = [
+  {
+    title: "RagUU",
+    status: "In Progress",
+    task: "Document Q&A System — Data pipeline for querying unstructured documents",
+    stack: "LangChain · Chroma · Sentence-Transformers · OpenAI API · Streamlit",
+    highlights: [
+      "a system enabling users to query large sets of unstructured documents (PDF/text) and receive accurate, source-cited answers — improving speed and traceability of information retrieval.",
+      "Improved answer accuracy through retrieval-quality enhancements; deployed as an interactive web application, making complex document sets easily searchable for non-technical users.",
+      "Applied generative AI (RAG with LangChain) to synthesize contextually grounded, source-cited answers from retrieved document chunks, going beyond simple keyword search"
+    ],
+    github: "https://github.com/Hars8430/RAG-",
+    demo: "https://neduyw8dohjpru28tx2hms.streamlit.app/"
+  },
+  {
+    title: "Fine-tuned Task-Specific LLM",
+    status: "In Progress",
+    task: "LoRA/QLoRA fine-tune of a small open-source model for a narrow task.",
+    stack: "Hugging Face Transformers · PEFT · bitsandbytes · Colab (T4)",
+    highlights: [
+      "Before/after comparison vs. base model on held-out prompts",
+      "Documented why LoRA over full fine-tuning (compute/cost tradeoff)"
+    ],
+    github: "",
+    demo: ""
+  },
+  {
+    title: "VulgarVeto",
+    status: "Completed",
+    task: "Audio Content Classification Tool — Real-time audio data processing application.",
+    Tools: Python, scikit-learn, Streamlit, Pydub, GTTS,
+    highlights: [
+      "an application that processes and classifies audio data in real time, generating a dynamic, data-driven summary metric per upload.",
+      "Implemented scalable chunked processing for large audio datasets, ensuring data integrity and consistent performance at scale."
+    ],
+    github: "https://github.com/Hars8430/VulgarVeto",
+    demo: "https://vulgarv2.streamlit.app/"
+  }
+];
+
+function renderProjects(){
+  const list = document.getElementById('projectList');
+  list.innerHTML = PROJECTS.map(p => `
+    <div class="project-card">
+      <div class="pc-head">
+        <span class="pc-title">${p.title}</span>
+        <span class="pc-status ${p.status === 'In Progress' ? 'progress' : ''}">${p.status}</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-field"><span class="k">task</span><span class="v">${p.task}</span></div>
+        <div class="pc-field"><span class="k">stack</span><span class="v">${p.stack}</span></div>
+        <div class="pc-field"><span class="k">highlights</span><span class="v"><ul>${p.highlights.map(h => `<li>${h}</li>`).join('')}</ul></span></div>
+        <div class="pc-links">
+          ${p.github ? `<a href="${p.github}" target="_blank">→ GitHub</a>` : `<span class="disabled">GitHub (coming soon)</span>`}
+          ${p.demo ? `<a href="${p.demo}" target="_blank">→ Live Demo</a>` : `<span class="disabled">Demo (coming soon)</span>`}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderProjects();
+
+/* Terminal typewriter intro */
+const lines = [
+  { text: "> whoami", cls: "prompt", pause: 400 },
+  { text: "", nameLine: true, pause: 500 },
+  { text: "> status --current", cls: "prompt", pause: 400 },
+  { text: "Building with LLMs · RAG · Fine-tuning · Agents", cls: "out-sub", pause: 0 }
+];
+
+const body = document.getElementById('terminalBody');
+let li = 0;
+
+function typeLine(){
+  if(li >= lines.length){
+    const cur = document.createElement('span');
+    cur.className = 'cursor';
+    body.appendChild(cur);
+    return;
+  }
+  const line = lines[li];
+  const div = document.createElement('div');
+  div.className = 'line';
+  body.appendChild(div);
+
+  if(line.nameLine){
+    div.innerHTML = `<span class="out-name">Harsh <span class="out-role">— Generative AI Engineer</span></span>`;
+    li++;
+    setTimeout(typeLine, line.pause);
+    return;
+  }
+
+  div.className = 'line ' + (line.cls || '');
+  let i = 0;
+  const speed = 28;
+  function type(){
+    if(i <= line.text.length){
+      div.textContent = line.text.slice(0, i);
+      i++;
+      setTimeout(type, speed);
+    } else {
+      li++;
+      setTimeout(typeLine, line.pause);
+    }
+  }
+  type();
+}
+typeLine();
+</script>
+
+</body>
+</html>
